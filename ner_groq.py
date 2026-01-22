@@ -141,3 +141,23 @@ def main():
 
 if __name__ == "__main__":
     main()
+=======
+from groq import GroqClient
+
+# 1️⃣ Set your Groq API key
+api_key = "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"
+os.environ["GROQ_API_KEY"] = api_key
+
+# 2️⃣ Initialize Groq client
+client = GroqClient(api_key=api_key)
+
+# 3️⃣ Text to analyze
+text = "Apple is planning to open a new office in Bangalore next year."
+
+# 4️⃣ Run NER
+response = client.analyze(text, task="ner")
+
+# 5️⃣ Print detected entities
+print("Detected entities:")
+for entity in response["entities"]:
+    print(f"- {entity['text']} ({entity['label']})")
