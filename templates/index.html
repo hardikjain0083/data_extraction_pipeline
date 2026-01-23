@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Data Extraction Pipeline - India</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Education Data Extraction</h1>
+                </div>
+                <p class="subtitle">AI-Powered Pipeline for Indian Education Documents</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-file-pdf"></i>
+                        <h2>Upload PDF Document</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="fileInput" accept=".pdf" hidden>
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop your PDF file here</p>
+                                <p class="upload-hint">or click to browse</p>
+                                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                    <i class="fas fa-folder-open"></i> Select File
+                                </button>
+                            </div>
+                        </div>
+                        <div id="fileInfo" class="file-info hidden">
+                            <i class="fas fa-file-pdf"></i>
+                            <span id="fileName"></span>
+                            <button class="btn-remove" onclick="removeFile()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="action-section">
+                <button id="processBtn" class="btn btn-process" disabled>
+                    <i class="fas fa-cogs"></i>
+                    <span>Process Document</span>
+                </button>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progressSection" class="progress-section hidden">
+                <div class="progress-card">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">Processing...</p>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h2>Extraction Results</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Download Buttons -->
+                        <div class="download-buttons">
+                            <button class="btn btn-download" onclick="downloadCSV()">
+                                <i class="fas fa-file-csv"></i> Download CSV
+                            </button>
+                            <button class="btn btn-download" onclick="downloadPDF()">
+                                <i class="fas fa-file-pdf"></i> Download PDF Report
+                            </button>
+                        </div>
+
+                        <!-- Results Tabs -->
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="showTab('summary')">Summary</button>
+                            <button class="tab-btn" onclick="showTab('entities')">Entities</button>
+                            <button class="tab-btn" onclick="showTab('statistics')">Statistics</button>
+                            <button class="tab-btn" onclick="showTab('tables')">Tables</button>
+                            <button class="tab-btn" onclick="showTab('policies')">Policies</button>
+                        </div>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content">
+                            <!-- Summary Tab -->
+                            <div id="summaryTab" class="tab-pane active">
+                                <div class="result-item">
+                                    <h3>Document Summary</h3>
+                                    <p id="summaryText" class="summary-text"></p>
+                                </div>
+                                <div class="result-item">
+                                    <h3>Document Type</h3>
+                                    <p id="docType"></p>
+                                </div>
+                                <div class="result-item">
+                                    <h3>Education Levels</h3>
+                                    <div id="educationLevels" class="tag-container"></div>
+                                </div>
+                                <div class="result-item">
+                                    <h3>States Mentioned</h3>
+                                    <div id="statesMentioned" class="tag-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Entities Tab -->
+                            <div id="entitiesTab" class="tab-pane">
+                                <div class="result-item">
+                                    <h3>Named Entities</h3>
+                                    <div id="entitiesList" class="entities-list"></div>
+                                </div>
+                            </div>
+
+                            <!-- Statistics Tab -->
+                            <div id="statisticsTab" class="tab-pane">
+                                <div class="result-item">
+                                    <h3>Key Statistics</h3>
+                                    <div id="statisticsList" class="statistics-list"></div>
+                                </div>
+                            </div>
+
+                            <!-- Tables Tab -->
+                            <div id="tablesTab" class="tab-pane">
+                                <div class="result-item">
+                                    <h3>Extracted Tables</h3>
+                                    <div id="tablesList" class="tables-list"></div>
+                                </div>
+                            </div>
+
+                            <!-- Policies Tab -->
+                            <div id="policiesTab" class="tab-pane">
+                                <div class="result-item">
+                                    <h3>Policies & Schemes</h3>
+                                    <div id="policiesList" class="policies-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by Groq AI & Named Entity Recognition</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
+

@@ -4,3 +4,11 @@ configparser
 PyMuPDF==1.25.1
 python-docx==1.1.2
 Pillow
+groq
+python-dotenv
+pandas
+pydantic
+pymupdf4llm
+flask
+reportlab
+werkzeug
